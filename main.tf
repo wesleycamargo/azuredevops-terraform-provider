@@ -113,8 +113,3 @@ resource "azuredevops_build_definition" "build" {
     value   = var.service_endpoint_name
   }
 }
-
-resource "azuredevops_agent_pool" "pool" {
-  name           = "Pool"
-  auto_provision = false
-}
