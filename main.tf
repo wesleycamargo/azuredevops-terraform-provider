@@ -1,17 +1,16 @@
 provider "azuredevops" {
   version = ">= 0.0.1"
-  org_service_url = "https://dev.azure.com/wesleycamargo"
-  personal_access_token = ""
+  org_service_url = var.azdo_url
+  personal_access_token = var.azdo_token
 }
 
 resource "azuredevops_project" "project" {
-  name       = "Terraform Project"
-  description        = "Project Description"
+  name       = var.teamproject_name
 }
 
 resource "azuredevops_git_repository" "repo" {
   project_id = azuredevops_project.project.id
-  name       = "Sample Empty Git Repository"
+  name       = var.repository_name
   initialization {
     init_type = "Import"
     source_type = "Git"
@@ -20,7 +19,7 @@ resource "azuredevops_git_repository" "repo" {
 }
 
 resource "azuredevops_user_entitlement" "user" {
-  principal_name       = "email@outlook.com"  
+  principal_name       = var.pr_approver  
 }
 
 resource "azuredevops_branch_policy_min_reviewers" "reviewerspolicy" {
