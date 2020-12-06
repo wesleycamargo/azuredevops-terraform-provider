@@ -9,6 +9,11 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
+
+variables:
+  terraformstorageaccount: 'terraformstorage554d0a4e'
+  terraformstoragerg: 'terraformrg'
+
 steps:
 
 - task: AzureCLI@1
