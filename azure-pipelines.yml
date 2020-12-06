@@ -103,3 +103,4 @@ steps:
     backendAzureRmStorageAccountName: '$(terraformstorageaccount) '
     backendAzureRmContainerName: terraform
     backendAzureRmKey: 'azDoProvider'
+    environmentServiceNameAzureRM: 'VSE'
