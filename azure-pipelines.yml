@@ -57,6 +57,7 @@ steps:
             $key=(Get-AzureRmStorageAccountKey -ResourceGroupName $(terraformstoragerg) -AccountName $(terraformstorageaccount)).Value[0]
             
             Write-Host "##vso[task.setvariable variable=storagekey]$key"
+    azurePowerShellVersion: 'LatestVersion'
 
 - task: replacetokens@3
   inputs:
