@@ -9,10 +9,15 @@ pool:
 
 
 variables:
-  terraformstorageaccount: 'terraformstorage554d0a4e'
-  terraformstoragerg: 'terraformrg'
-  azdo_url: 'https://dev.azure.com/wesleycamargo'
-  repository_template: "https://github.com/wesleycamargo/PartsUnlimetdYAML.git"
+- group: Service Endpoint
+- name: terraformstorageaccount
+  value: 'terraformstorage554d0a4e'
+- name: terraformstoragerg
+  value: 'terraformrg'
+- name: azdo_url
+  value: 'https://dev.azure.com/wesleycamargo'
+- name: repository_template
+  value: "https://github.com/wesleycamargo/PartsUnlimetdYAML.git"
 
 steps:
 
