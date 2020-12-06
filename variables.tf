@@ -17,3 +17,7 @@ variable "teamproject_name" {
 variable "repository_name" {
   default = "__repository_name__"
 }
+
+variable "repository_template" {
+  default = "__repository_template__"
+}
