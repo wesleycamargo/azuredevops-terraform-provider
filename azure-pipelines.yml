@@ -43,10 +43,34 @@ steps:
      Write-Host "##vso[task.setvariable variable=storagekey]$key"
     azurePowerShellVersion: LatestVersion
 
-- task: qetza.replacetokens.replacetokens-task.replacetokens@3
-  displayName: 'Replace tokens in terraform file'
+- task: replacetokens@3
   inputs:
     targetFiles: '**/*.tf'
-    escapeType: none
+    encoding: 'auto'
+    writeBOM: true
+    actionOnMissing: 'warn'
+    keepToken: false
     tokenPrefix: '__'
     tokenSuffix: '__'
+    useLegacyPattern: false
+    enableTelemetry: true
+
+- task: TerraformInstaller@0
+  inputs:
+    terraformVersion: '0.12.3'
+
+- task: TerraformTaskV1@0
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'VSE'
+    backendAzureRmResourceGroupName: '$(terraformstoragerg)'
+    backendAzureRmStorageAccountName: '$(terraformstorageaccount)'
+    backendAzureRmContainerName: 'terraform'
+    backendAzureRmKey: 'terraform.tfstate'
+
+- task: TerraformTaskV1@0
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    environmentServiceNameAzureRM: 'VSE'
