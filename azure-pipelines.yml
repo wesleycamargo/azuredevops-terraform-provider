@@ -13,6 +13,9 @@ pool:
 variables:
   terraformstorageaccount: 'terraformstorage554d0a4e'
   terraformstoragerg: 'terraformrg'
+  azdo_url: 'https://dev.azure.com/wesleycamargo'
+  teamproject_name: 'Terraform Project'
+  repository_name: 'Template Repository'
 
 steps:
 
