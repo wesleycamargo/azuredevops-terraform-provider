@@ -16,7 +16,7 @@ variables:
 - name: azdo_url
   value: 'https://dev.azure.com/wesleycamargo'
 - name: repository_template
-  value: "https://github.com/wesleycamargo/PartsUnlimetdYAML.git"
+  value: "https://github.com/wesleycamargo/SandboxAspNetCore.git"
 
 steps:
 
