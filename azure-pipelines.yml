@@ -12,7 +12,7 @@ variables:
   terraformstorageaccount: 'terraformstorage554d0a4e'
   terraformstoragerg: 'terraformrg'
   azdo_url: 'https://dev.azure.com/wesleycamargo'
-  repository_template: "https://wesleycamargo@dev.azure.com/wesleycamargo/Azure%20DevOps%20Demo%20YAML/_git/PartsUnlimited"
+  repository_template: "https://github.com/wesleycamargo/PartsUnlimetdYAML.git"
 
 steps:
 
