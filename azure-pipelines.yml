@@ -11,10 +11,9 @@ pool:
 
 steps:
 
-- task: AzureCLI@2
+- task: AzureCLI@1
   inputs:
     azureSubscription: 'VSE'
-    scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: |
       # this will create Azure resource group
