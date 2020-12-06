@@ -43,11 +43,17 @@ steps:
      Write-Host "##vso[task.setvariable variable=storagekey]$key"
     azurePowerShellVersion: LatestVersion
 
-- task: ReplaceTokens@1
+- task: replacetokens@3
   inputs:
-    sourcePath: 
-    filePattern: '*.tf'
-    tokenRegex: '__(\w+)__'
+    targetFiles: '**/*.tf'
+    encoding: 'auto'
+    writeBOM: true
+    actionOnMissing: 'warn'
+    keepToken: false
+    tokenPrefix: '__'
+    tokenSuffix: '__'
+    useLegacyPattern: false
+    enableTelemetry: true
 
 - task: TerraformInstaller@0
   inputs:
