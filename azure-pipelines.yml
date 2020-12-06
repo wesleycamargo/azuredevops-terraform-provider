@@ -1,0 +1,101 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+pool:
+  vmImage: 'windows-latest'
+  name: 'Pool'
+
+
+variables:
+  terraformstorageaccount: 'terraformstorage554d0a4e'
+  terraformstoragerg: 'terraformrg'
+  azdo_url: 'https://dev.azure.com/wesleycamargo'
+
+steps:
+
+- task: AzureCLI@1
+  inputs:
+    azureSubscription: 'VSE'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      # this will create Azure resource group
+      call az group create --location westus --name $(terraformstoragerg)
+      
+      call az storage account create --name $(terraformstorageaccount) --resource-group $(terraformstoragerg) --location westus --sku Standard_LRS
+      
+      call az storage container create --name terraform --account-name $(terraformstorageaccount)
+      
+      call az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount)
+
+# - task: AzurePowerShell@3
+#   displayName: 'Azure PowerShell script to get the storage key'
+#   inputs:
+#     azureSubscription: 'VSE'
+#     ScriptType: 'InlineScript'
+#     Inline: |
+#       # Using this script we will fetch storage key which is required in terraform file to authenticate backend storage account
+      
+#       $key=(Get-AzureRmStorageAccountKey -ResourceGroupName $(terraformstoragerg) -AccountName $(terraformstorageaccount)).Value[0]
+      
+#       Write-Host "##vso[task.setvariable variable=storagekey]$key"
+#     azurePowerShellVersion: 'LatestVersion'
+
+- task: AzurePowerShell@5
+  inputs:
+    azureSubscription: 'VSE'
+    ScriptType: 'InlineScript'
+    Inline: |
+      # Using this script we will fetch storage key which is required in terraform file to authenticate backend storage account
+            
+            $key=(Get-AzStorageAccountKey -ResourceGroupName $(terraformstoragerg) -AccountName $(terraformstorageaccount)).Value[0]
+            
+            Write-Host "##vso[task.setvariable variable=storagekey]$key"
+    azurePowerShellVersion: 'LatestVersion'
+
+- task: replacetokens@3
+  inputs:
+    targetFiles: '**/*.tf'
+    encoding: 'auto'
+    writeBOM: true
+    actionOnMissing: 'warn'
+    keepToken: false
+    tokenPrefix: '__'
+    tokenSuffix: '__'
+    useLegacyPattern: false
+    enableTelemetry: true
+
+- task: TerraformInstaller@0
+  inputs:
+    terraformVersion: '0.12.3'
+
+- task: TerraformTaskV1@0
+  displayName: 'Terraform Init'
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'VSE'
+    backendAzureRmResourceGroupName: '$(terraformstoragerg)'
+    backendAzureRmStorageAccountName: '$(terraformstorageaccount)'
+    backendAzureRmContainerName: 'terraform'
+    backendAzureRmKey: 'terraform.tfstate'
+
+- task: TerraformTaskV1@0
+  displayName: 'Terraform Plan'
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    environmentServiceNameAzureRM: 'VSE'
+
+- task: TerraformTaskV1@0
+  displayName: 'Terraform : apply -auto-approve'
+  inputs:
+    command: apply
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    commandOptions: '-auto-approve'
+    backendAzureRmResourceGroupName: '$(terraformstoragerg)'
+    backendAzureRmStorageAccountName: '$(terraformstorageaccount) '
+    backendAzureRmContainerName: terraform
+    backendAzureRmKey: 'azDoProvider'
+    environmentServiceNameAzureRM: 'VSE'
