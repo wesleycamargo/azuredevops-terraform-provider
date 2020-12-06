@@ -76,8 +76,8 @@ steps:
     terraformVersion: '0.12.3'
 
 - task: TerraformTaskV1@0
+  displayName: 'Terraform Init'
   inputs:
-    name: 'Terraform Init'
     provider: 'azurerm'
     command: 'init'
     backendServiceArm: 'VSE'
@@ -87,8 +87,8 @@ steps:
     backendAzureRmKey: 'terraform.tfstate'
 
 - task: TerraformTaskV1@0
+  displayName: 'Terraform Plan'
   inputs:
-    name: 'Terraform Plan'
     provider: 'azurerm'
     command: 'plan'
     environmentServiceNameAzureRM: 'VSE'
@@ -96,7 +96,6 @@ steps:
 - task: TerraformTaskV1@0
   displayName: 'Terraform : apply -auto-approve'
   inputs:
-    name: 'Terraform Apply'
     command: apply
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     commandOptions: '-auto-approve'
