@@ -9,10 +9,10 @@ pool:
 
 variables:
 - group: Service Endpoint
-- name: terraformstorageaccount
-  value: 'terraformstorage554d0a4e'
 - name: terraformstoragerg
-  value: 'terraformrg'
+  value: 'RG-MVP-Conf'
+- name: terraformstorageaccount
+  value: 'stgmvpconfdevopsascode'
 - name: azdo_url
   value: 'https://dev.azure.com/wesleycamargo'
 - name: repository_template
