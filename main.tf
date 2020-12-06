@@ -5,7 +5,8 @@ provider "azuredevops" {
 }
 
 resource "azuredevops_project" "project" {
-  name       = var.teamproject_name
+  name        = var.teamproject_name
+  description = "Team Project created using Az DevOps Terraform Provider!"
 }
 
 resource "azuredevops_git_repository" "repo" {
